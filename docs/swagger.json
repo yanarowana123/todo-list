@@ -1,0 +1,189 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "Todo-list app",
+        "title": "todo-list app",
+        "contact": {},
+        "version": "1.0"
+    },
+    "paths": {
+        "/api/todo-list/tasks": {
+            "get": {
+                "description": "lists tasks",
+                "summary": "list tasks",
+                "parameters": [
+                    {
+                        "enum": [
+                            "active",
+                            "done"
+                        ],
+                        "type": "string",
+                        "description": "task status",
+                        "name": "status",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.TaskResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "creates task",
+                "summary": "create task",
+                "parameters": [
+                    {
+                        "description": "body",
+                        "name": "task",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.UpsertTaskSwagger"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.CreateTaskResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Something went wrong while creating"
+                    }
+                }
+            }
+        },
+        "/api/todo-list/tasks/{id}": {
+            "put": {
+                "description": "updates task",
+                "summary": "update task",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "task id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "body",
+                        "name": "task",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.UpsertTaskSwagger"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Task not found"
+                    }
+                }
+            },
+            "delete": {
+                "description": "deletes task",
+                "summary": "delete task",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "task id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "404": {
+                        "description": "Task not found"
+                    }
+                }
+            }
+        },
+        "/api/todo-list/tasks/{id}/done": {
+            "put": {
+                "description": "makes task done",
+                "summary": "done task",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "task id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "404": {
+                        "description": "Task not found"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "dto.CreateTaskResponse": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.Datetime": {
+            "type": "object",
+            "properties": {
+                "time.Time": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.TaskResponse": {
+            "type": "object",
+            "properties": {
+                "activeAt": {
+                    "$ref": "#/definitions/dto.Datetime"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.UpsertTaskSwagger": {
+            "type": "object",
+            "properties": {
+                "activeAt": {
+                    "type": "string",
+                    "format": "date"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

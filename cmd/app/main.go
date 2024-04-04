@@ -2,7 +2,10 @@ package main
 
 import (
 	"context"
+	"github.com/subosito/gotenv"
 	"log"
+	"todo/configs"
+	_ "todo/docs"
 	"todo/internal/controller/http"
 	mongodb2 "todo/internal/repository/mongodb"
 	"todo/internal/service"
@@ -10,46 +13,38 @@ import (
 	"todo/pkg/web"
 )
 
+// @title todo-list app
+// @version		1.0
+// @description	Todo-list app
 func main() {
-	//gotenv.Load()
 	if err := run(); err != nil {
 		log.Fatal(err.Error())
 	}
 }
 
 func run() error {
+	err := gotenv.Load(".env.local")
+	if err != nil {
+		return err
+	}
 
+	config, err := configs.New()
+	if err != nil {
+		return err
+	}
 	ctx := context.Background()
-	db, err := mongodb.NewClient(ctx, "localhost", "27018", "", "", "todo-list", "")
+
+	db, err := mongodb.NewClient(ctx, *config)
 
 	if err != nil {
+		log.Println(err)
 		panic("WTF")
 	}
 
 	repo := mongodb2.NewRepository(db)
-	//repo := inmemory.NewRepository()
-	service := service.NewTaskService(repo)
-	router := http.NewRouter(http.NewController(service))
+	taskService := service.NewTaskService(repo)
+	router := http.NewRouter(http.NewController(taskService))
 
-	web.InitServer(router)
+	web.InitServer(router, *config)
 	return nil
-
-	//config, err := configs.New()
-	//if err != nil {
-	//	return err
-	//}
-	//
-	//validate := validator.New()
-	//
-	//repositoryManager := repositories.NewManager(*config)
-	//
-	//serviceManager := services.NewManager(*repositoryManager, *config)
-	//
-	//handlerManager := handler.NewManager(*serviceManager, validate)
-	//
-	//r := mux.NewRouter()
-	//router := web.InitRouter(r, *handlerManager)
-	//
-	//web.InitServer(*config, router)
-	//return nil
 }

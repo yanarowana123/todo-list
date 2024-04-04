@@ -1,0 +1,28 @@
+networks:
+  todo-list:
+    driver: bridge
+
+volumes:
+  db_data:
+
+services:
+  app:
+    build: .
+    ports:
+      - "${WebServerPort}:${WebServerPort}"
+    volumes:
+      - .:/src
+    environment:
+      - TZ=Asia/Almaty
+    networks:
+      - todo-list
+    depends_on:
+      - mongodb
+  mongodb:
+    image: mongo:latest
+    ports:
+      - '27019:27017'
+    volumes:
+      - db_data:/data/db
+    networks:
+      - todo-list

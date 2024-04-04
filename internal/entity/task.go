@@ -2,7 +2,6 @@ package entity
 
 import (
 	"errors"
-	"github.com/google/uuid"
 	"time"
 	"unicode/utf8"
 )
@@ -10,13 +9,13 @@ import (
 type Status int
 
 const (
-	active Status = iota
-	done
+	BrandNew Status = iota
+	Done
 )
 
 // Task Главная сущность приложения
 type Task struct {
-	Id        uuid.UUID
+	Id        string
 	Title     string
 	Status    Status
 	ActiveAt  time.Time
@@ -24,21 +23,34 @@ type Task struct {
 }
 
 func NewTask(title string, activeAt time.Time) (*Task, error) {
-	// Учитываем мултьтибайтность
-	if utf8.RuneCountInString(title) > 4 {
+	err := validateTitle(title)
+	if err != nil {
 		return nil, errors.New("title length must not exceed 200 characters")
 	}
 
-	return &Task{uuid.New(), title, active, activeAt, time.Now()}, nil
+	return &Task{"", title, BrandNew, activeAt, time.Now()}, nil
 }
 
-func (t *Task) Done() error {
-	t.Status = done
+func (t *Task) Update(title string, activeAt time.Time) error {
+	err := validateTitle(title)
+	if err != nil {
+		return errors.New("title length must not exceed 200 characters")
+	}
+
+	t.Title = title
+	t.ActiveAt = activeAt
 	return nil
 }
 
-//// Id геттеры для обеспечения имутабильности
-//// приемник ссылочного типа потому что пункт 3 из https://youtu.be/G-lhh_1XNcI?list=LL&t=1540 (не знаю насколько можно доверять, но интересный доклад)
-//func (t *Task) Id() uuid.UUID {
-//	return t.id
-//}
+func (t *Task) Done() error {
+	t.Status = Done
+	return nil
+}
+
+func validateTitle(title string) error {
+	if utf8.RuneCountInString(title) > 200 {
+		return errors.New("title length must not exceed 200 characters")
+	}
+
+	return nil
+}

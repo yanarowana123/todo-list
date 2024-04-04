@@ -9,14 +9,15 @@ import (
 	"os"
 	"os/signal"
 	"time"
+	"todo/configs"
 )
 
-func InitServer(h http.Handler) {
+func InitServer(h http.Handler, config configs.Config) {
 	var wait time.Duration
 	flag.DurationVar(&wait, "graceful-timeout", 40, "the duration for which the server gracefully wait for existing connections to finish - e.g. 15s or 1m")
 	flag.Parse()
 	srv := &http.Server{
-		Addr:    fmt.Sprintf("127.0.0.1:%d", 4023),
+		Addr:    fmt.Sprintf(":%d", config.WebServerPort),
 		Handler: h,
 	}
 

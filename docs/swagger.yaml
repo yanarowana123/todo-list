@@ -1,0 +1,123 @@
+definitions:
+  dto.CreateTaskResponse:
+    properties:
+      id:
+        type: string
+    type: object
+  dto.Datetime:
+    properties:
+      time.Time:
+        type: string
+    type: object
+  dto.TaskResponse:
+    properties:
+      activeAt:
+        $ref: '#/definitions/dto.Datetime'
+      id:
+        type: string
+      title:
+        type: string
+    type: object
+  dto.UpsertTaskSwagger:
+    properties:
+      activeAt:
+        format: date
+        type: string
+      title:
+        type: string
+    type: object
+info:
+  contact: {}
+  description: Todo-list app
+  title: todo-list app
+  version: "1.0"
+paths:
+  /api/todo-list/tasks:
+    get:
+      description: lists tasks
+      parameters:
+      - description: task status
+        enum:
+        - active
+        - done
+        in: query
+        name: status
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.TaskResponse'
+      summary: list tasks
+    post:
+      description: creates task
+      parameters:
+      - description: body
+        in: body
+        name: task
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpsertTaskSwagger'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.CreateTaskResponse'
+        "400":
+          description: Bad request
+        "404":
+          description: Something went wrong while creating
+      summary: create task
+  /api/todo-list/tasks/{id}:
+    delete:
+      description: deletes task
+      parameters:
+      - description: task id
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "204":
+          description: No Content
+        "404":
+          description: Task not found
+      summary: delete task
+    put:
+      description: updates task
+      parameters:
+      - description: task id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: body
+        in: body
+        name: task
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpsertTaskSwagger'
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad request
+        "404":
+          description: Task not found
+      summary: update task
+  /api/todo-list/tasks/{id}/done:
+    put:
+      description: makes task done
+      parameters:
+      - description: task id
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "204":
+          description: No Content
+        "404":
+          description: Task not found
+      summary: done task
+swagger: "2.0"
