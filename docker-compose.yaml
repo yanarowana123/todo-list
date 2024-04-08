@@ -21,7 +21,7 @@ services:
   mongodb:
     image: mongo:latest
     ports:
-      - '27019:27017'
+      - "${MongodbHostPort}:${MongodbPort}"
     volumes:
       - db_data:/data/db
     networks:
