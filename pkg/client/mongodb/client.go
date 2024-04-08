@@ -3,6 +3,7 @@ package mongodb
 import (
 	"context"
 	"fmt"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"todo/configs"
@@ -41,4 +42,14 @@ func NewClient(ctx context.Context, config configs.Config) (db *mongo.Database, 
 	}
 
 	return client.Database(config.MongodbName), nil
+}
+
+func CreateIndexes(ctx context.Context, db *mongo.Database) error {
+	indexModel := mongo.IndexModel{
+		Keys:    bson.D{{"title", 1}, {"activeAt", 1}},
+		Options: options.Index().SetUnique(true),
+	}
+
+	_, err := db.Collection("tasks").Indexes().CreateOne(ctx, indexModel)
+	return err
 }

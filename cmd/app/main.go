@@ -35,10 +35,12 @@ func run() error {
 	ctx := context.Background()
 
 	db, err := mongodb.NewClient(ctx, *config)
-
 	if err != nil {
-		log.Println(err)
-		panic("WTF")
+		return err
+	}
+	err = mongodb.CreateIndexes(ctx, db)
+	if err != nil {
+		return err
 	}
 
 	repo := mongodb2.NewRepository(db)
