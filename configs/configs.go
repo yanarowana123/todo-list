@@ -1,7 +1,9 @@
 package configs
 
 import (
+	"errors"
 	"os"
+	"strconv"
 )
 
 type Config struct {
@@ -15,35 +17,31 @@ type Config struct {
 }
 
 func New() (*Config, error) {
-	//mongodbHost := os.Getenv("MongodbHost")
-	//if len(mongodbHost) == 0 {
-	//	return nil, errors.New("please specify MongodbHost variable in env")
-	//}
-	//
-	//mongodbPort := os.Getenv("MongodbPort")
-	//if len(mongodbPort) == 0 {
-	//	return nil, errors.New("please specify MongodbPort variable in env")
-	//}
-	//
-	//mongodbName := os.Getenv("MongodbName")
-	//
-	//if len(mongodbName) == 0 {
-	//	return nil, errors.New("please specify MongodbName variable in env")
-	//}
-	//
-	//webServerPortString := os.Getenv("WebServerPort")
-	//if len(webServerPortString) == 0 {
-	//	return nil, errors.New("please specify WebServerPort variable in env")
-	//}
-	//webServerPort, err := strconv.Atoi(webServerPortString)
-	//if err != nil {
-	//	return nil, errors.New("WebServerPort must be integer")
-	//}
+	mongodbHost := os.Getenv("MongodbHost")
+	if len(mongodbHost) == 0 {
+		return nil, errors.New("please specify MongodbHost variable in env")
+	}
 
-	mongodbHost := "mongodb"
-	mongodbPort := "27017"
-	mongodbName := "todo-list"
-	webServerPort := 4023
+	mongodbPort := os.Getenv("MongodbPort")
+	if len(mongodbPort) == 0 {
+		return nil, errors.New("please specify MongodbPort variable in env")
+	}
+
+	mongodbName := os.Getenv("MongodbName")
+
+	if len(mongodbName) == 0 {
+		return nil, errors.New("please specify MongodbName variable in env")
+	}
+
+	webServerPortString := os.Getenv("WebServerPort")
+	if len(webServerPortString) == 0 {
+		return nil, errors.New("please specify WebServerPort variable in env")
+	}
+	webServerPort, err := strconv.Atoi(webServerPortString)
+	if err != nil {
+		return nil, errors.New("WebServerPort must be integer")
+	}
+
 	return &Config{
 		MongodbHost:     mongodbHost,
 		MongodbPort:     mongodbPort,

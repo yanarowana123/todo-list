@@ -4,12 +4,12 @@ import (
 	"context"
 	"flag"
 	"fmt"
+	"github.com/yanarowana123/todo-list/configs"
 	"log"
 	"net/http"
 	"os"
 	"os/signal"
 	"time"
-	"todo/configs"
 )
 
 func InitServer(h http.Handler, config configs.Config) {

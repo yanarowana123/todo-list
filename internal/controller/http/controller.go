@@ -3,10 +3,10 @@ package http
 import (
 	"context"
 	"encoding/json"
+	"github.com/yanarowana123/todo-list/internal/controller/http/dto"
+	"github.com/yanarowana123/todo-list/internal/entity"
+	applicationDto "github.com/yanarowana123/todo-list/internal/service/dto"
 	"net/http"
-	"todo/internal/controller/http/dto"
-	"todo/internal/entity"
-	applicationDto "todo/internal/service/dto"
 )
 
 type TaskService interface {

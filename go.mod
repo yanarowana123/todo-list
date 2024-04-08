@@ -1,4 +1,4 @@
-module todo
+module github.com/yanarowana123/todo-list
 
 go 1.22
 

@@ -3,12 +3,12 @@ package mongodb
 import (
 	"context"
 	"fmt"
+	"github.com/yanarowana123/todo-list/internal/entity"
+	"github.com/yanarowana123/todo-list/internal/repository/mongodb/dto"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"time"
-	"todo/internal/entity"
-	"todo/internal/repository/mongodb/dto"
 )
 
 type Repository struct {

@@ -3,14 +3,14 @@ package main
 import (
 	"context"
 	"github.com/subosito/gotenv"
+	"github.com/yanarowana123/todo-list/configs"
+	_ "github.com/yanarowana123/todo-list/docs"
+	"github.com/yanarowana123/todo-list/internal/controller/http"
+	mongodb2 "github.com/yanarowana123/todo-list/internal/repository/mongodb"
+	"github.com/yanarowana123/todo-list/internal/service"
+	"github.com/yanarowana123/todo-list/pkg/client/mongodb"
+	"github.com/yanarowana123/todo-list/pkg/web"
 	"log"
-	"todo/configs"
-	_ "todo/docs"
-	"todo/internal/controller/http"
-	mongodb2 "todo/internal/repository/mongodb"
-	"todo/internal/service"
-	"todo/pkg/client/mongodb"
-	"todo/pkg/web"
 )
 
 // @title todo-list app

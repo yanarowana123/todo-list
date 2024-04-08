@@ -3,10 +3,10 @@ package service
 import (
 	"context"
 	"errors"
+	"github.com/yanarowana123/todo-list/internal/entity"
+	"github.com/yanarowana123/todo-list/internal/service/dto"
 	"strings"
 	"time"
-	"todo/internal/entity"
-	"todo/internal/service/dto"
 )
 
 type TaskRepository interface {

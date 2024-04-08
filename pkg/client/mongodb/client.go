@@ -3,10 +3,10 @@ package mongodb
 import (
 	"context"
 	"fmt"
+	"github.com/yanarowana123/todo-list/configs"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
-	"todo/configs"
 )
 
 func NewClient(ctx context.Context, config configs.Config) (db *mongo.Database, err error) {
@@ -45,6 +45,7 @@ func NewClient(ctx context.Context, config configs.Config) (db *mongo.Database, 
 }
 
 func CreateIndexes(ctx context.Context, db *mongo.Database) error {
+	// Для обеспечения уникальности
 	indexModel := mongo.IndexModel{
 		Keys:    bson.D{{"title", 1}, {"activeAt", 1}},
 		Options: options.Index().SetUnique(true),
